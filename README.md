@@ -128,13 +128,13 @@ $ mongo --host 127.0.0.1:27017
 > show dbs
 ```
 
-## Desarrollo
+## Desarrollo 👩‍💻
 Creamos el archivo `index.js`.
 ```
 $ touch index.js
 ```
 
-### Criptografía y Tokens ⚙️
+### Criptografía y Tokens 🔑
 
 Creamos nuestro repositorio. En `01_bcrypt.js`, importamos la librería **bcrypt** y ponemos nuestros datos para la simulación.
 ```
@@ -164,7 +164,7 @@ bcrypt.hash( miPass, 10, (err, hash) => {
     };
 });
 ```
-### Moment: fechas y tiempos
+### Moment: fechas y tiempos ⏰
 Podemos hacer ppruebas con moment desde la terminal para ver alguna de sus funciones
 ```
 $ date()
