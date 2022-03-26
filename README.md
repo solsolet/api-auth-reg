@@ -23,9 +23,14 @@ Una vez tengamos nuestra máquina preparada ya podemos empezar a instalar todos 
 ### Instalación 🔧
 
 Para la ejecución de esta práctica se necesita tener:
-* NodeJS (con bcrypt, moment y jwt-simple)
+* NodeJS (con express, bcrypt, moment y jwt-simple)
 * Git
 * Code (o similar)
+* MongoBD (con mongodb y mongojs)
+* Nodemon 
+* Morgan
+* Postman
+* Apache2
 
 Instalamos los programas
 ```
@@ -33,16 +38,24 @@ $ sudo snap install --classic code
 
 $ sudo apt install npm
 $ sudo apt install git
+$ sudo snap install postman
+$ sudo apt install apache2
+$ sudo apt install -y mongodb
 ```
-Creamos carpeta de trabajo:
+
+Trabajaremos en la carpeta **api-auth-reg**
 ```
-$ mkdir node
-$ cd node
-$ mkdir auth-test
-$ cd auth-test
+$ mkdir api-auth-reg
+$ cd api-auth-reg
 ```
+
 Instalamos las bibliotecas
 ```
+$ npm i -S express
+$ npm i -D nodemon
+$ npm i -S morgan
+$ npm i -S mongodb
+$ npm i -S mongojs
 $ npm i -S bcrypt
 $ npm i -S moment
 $ npm i -S jwt-simple
@@ -60,28 +73,68 @@ Si queremos comprobar las versiones
 $ node --version
 $ npm -v
 ```
+##### Express
+Para crear nuestra aplicación **node+express** incorporamos en `index.js`:
+```
+const express = require('express');
+```
 #### Git
 ```
 $ git config --global user.name gsl21
 $ git config --global user.email gsl21@alu.ua.es
 ```
 Depende de si partimos de un repositorio o no haremos unos comandos u otros.
+En nuestro caso al empezar de 0 haremos lo siguiente:
+```
+$ git init
+$ echo "# Servivio Web RESTFUL de Registro y Autenticación" > README.md
+$ git remote -v
+$ git remote add origin https://guthub.com/solsolet/api-auth-reg.git
+$ git init //para poner nuestros datos en el package.json
+```
+Para subir nuestro progreso al repositorio haremos
+```
+$ git status
+$ git add .
+$ git commit -m "Nombre del commit"
+$ git push -u origin master
+```
+#### Nodemon
+Con Code incluimos en el archivo `package.json` en la sección de scripts para que invoque nodemon.
+```
+"start": "nodemon index.js",
+```
+#### Morgan
+Lo configuramos como un middleware de Node, así tendremos un logger en nuestra aplicación.
 
-### Carpetas
-Trabajaremos en la carpeta **api-auth-reg**
+En nuestro `index.js` pondremos:
 ```
-mkdir api-auth-reg
-cd api-auth-reg
-```
-Creamos el repositorio local
-```
-git init
-echo "# tal" > README.md
-git remote -v
-git remote add origin https://guthub.com/solsolet/api-auth-reg.git
+const logger = require('morgan');
 ```
 
-## Criptografía y Tokens ⚙️
+#### MongoDB
+Iniciamos apache2 y mongoDB (puede ser en otra terminal):
+```
+$ sudo systemctl start apache2
+$ sudo systemctl start mongodb
+```
+Podemos verificar el funcionamiento
+```
+$ mongo --eval 'db.runCommand({ connectionStatus: 1 })'
+```
+abrimos el gestor de la case de datos:
+```
+$ mongo --host 127.0.0.1:27017
+> show dbs
+```
+
+## Desarrollo
+Creamos el archivo `index.js`.
+```
+$ touch index.js
+```
+
+### Criptografía y Tokens ⚙️
 
 Creamos nuestro repositorio. En `01_bcrypt.js`, importamos la librería **bcrypt** y ponemos nuestros datos para la simulación.
 ```
@@ -130,6 +183,8 @@ Creamos fuera de  services los archivos `pass-test.js`, `config.js` y `jwt-test.
 ## Construido con 🛠️
 
 * [VS Code](https://code.visualstudio.com) - Editor de texto
+* [Postman](http://www.postman.com) - Plataforma API
+* [MongoDB](https://www.mongodb.com) - Base de Datos
 * [NodeJS](https://nodejs.org) - Base de Datos
 * [Moment](https://npmjs.com/package/moment) - Librería
 * [Bcrypt](https://npmjs.com/package/bcrypt) - Librería
@@ -141,7 +196,7 @@ Para todas las versiones disponibles, mira los [tags](https://github.com/tu/proy
 
 ## Autora ✒️
 
-* **Gemma Sellés** - *Trabajo Inicial* - [gls21](https://github.com/solsolet)
+* **Gemma Sellés** - *Desarrollo de la práctica* - [gls21](https://github.com/solsolet)
 
 
 ## Licencia 📄

@@ -1,0 +1,33 @@
+{
+  "name": "api-auth-reg",
+  "version": "1.0.0",
+  "description": "Projecte de servici Web RESTFul de Registre i Autenticació",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/solsolet/api-auth-reg.git"
+  },
+  "keywords": [
+    "CRUD",
+    "REST",
+    "node",
+    "express",
+    "mongo",
+    "jwt",
+    "token",
+    "moment",
+    "bcrypt"
+  ],
+  "author": "Gemma Sellés Lloret",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/solsolet/api-auth-reg/issues"
+  },
+  "homepage": "https://github.com/solsolet/api-auth-reg#readme",
+  "dependencies": {
+    "express": "^4.17.3"
+  }
+}
