@@ -4,6 +4,7 @@
   "description": "Projecte de servici Web RESTFul de Registre i Autenticació",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -28,6 +29,12 @@
   },
   "homepage": "https://github.com/solsolet/api-auth-reg#readme",
   "dependencies": {
-    "express": "^4.17.3"
+    "express": "^4.17.3",
+    "mongodb": "^4.4.1",
+    "mongojs": "^3.1.0",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
   }
 }

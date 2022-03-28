@@ -1,4 +1,4 @@
-//Primers passos
+//API RESTFul CRUD
 'use strict'
 
 const port = process.env.PORT || 3000;
@@ -15,7 +15,7 @@ const OPTIONS_HTTPS = { //declarar clau privada i certificat
 const express = require('express');
 const logger = require('morgan');
 const mongojs = require('mongojs');
-const cors = require('cors');
+//const cors = require('cors');
 
 const app = express();
 
@@ -47,8 +47,8 @@ app.use(logger('dev')); //probar amb: tiny, short, dev, common, combined
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 //app.use(cors());
-app.use(allowMethods);
-app.use(allowCrossTokenHeader);
+//app.use(allowMethods);
+//app.use(allowCrossTokenHeader);
 //app.use(allowCrossTokenOrigin);
 
 //trigger previ a les rutes x donar suport a múltiples coleccions
@@ -87,7 +87,7 @@ app.get('/api/:coleccion/:id', (req,res,next) => {
     });
 });
 
-app.post('/api/:coleccion', auth, (req,res,next) => {
+app.post('/api/:coleccion', /*auth,*/ (req,res,next) => {
     const elemento = req.body;
 
     if(!elemento.nombre){
@@ -103,7 +103,7 @@ app.post('/api/:coleccion', auth, (req,res,next) => {
     }
 });
 
-app.put('/api/:coleccion/:id', auth, (req,res,next) => {
+app.put('/api/:coleccion/:id', /*auth,*/ (req,res,next) => {
     let elementoId = req.params.id;
     let elementoNuevo = req.body;
     req.collection.update({_id: id(elementoId)},
@@ -113,7 +113,7 @@ app.put('/api/:coleccion/:id', auth, (req,res,next) => {
     });
 });
 
-app.delete('/api/:coleccion/:id', auth, (req,res,next) => {
+app.delete('/api/:coleccion/:id', /*auth,*/ (req,res,next) => {
     let elementoId = req.params.id;
 
     req.collection.remove({_id: id(elementoId)}, (err,resultado) => {
@@ -123,11 +123,11 @@ app.delete('/api/:coleccion/:id', auth, (req,res,next) => {
 });
 
 //creem server https que inicia l'app
-https.createServer(OPTIONS_HTTPS, app).listen(port, () => {
+/*https.createServer(OPTIONS_HTTPS, app).listen(port, () => {
     console.log(`SCR WS API REST CRUD ejecutándose en https://localhost:${port}/api/:coleccion/:id`);
-});
+});*/
 
 //iniciem l'aplicació
-//app.listen(port, () => {
-    //console.log(`API REST ejecutándose en http://localhost:${port}/api/:coleccion/:id`);
-//});
+app.listen(port, () => {
+    console.log(`API REST ejecutándose en http://localhost:${port}/api/:coleccion/:id`);
+});
