@@ -1,4 +1,4 @@
-//API RESTFul CRUD
+//API RESTFul CRUD amb Mongo
 'use strict'
 
 const port = process.env.PORT || 3000;
@@ -61,8 +61,8 @@ app.use(express.json());
     return next();
 });*/
 
-//declarem nostres rutes i definim nostres controladors i log de negoci
-app.get('/api', (req,res,next) => {
+//Gestió d'usuaris
+/*app.get('/api', (req,res,next) => {
     console.log('GET/api');
     console.log(req.params);
     console.log(req.collection);
@@ -71,23 +71,23 @@ app.get('/api', (req,res,next) => {
         if (err) return next(err);
         res.json(colecciones);
     });
-});
+});*/
 
-app.get('/api/:coleccion', (req,res,next) => {
-    req.collection.find((err, coleccion) => {
+app.get('/api/user', (req,res,next) => {
+    req.collection.find((err, user) => {
         if (err) return next(err);
-        res.json(coleccion);
+        res.json(user);
     });
 });
 
-app.get('/api/:coleccion/:id', (req,res,next) => {
+app.get('/api/user/:id', (req,res,next) => {
     req.collection.findOne({_id: id(req.params.id)}, (err,elemento) => {
         if (err) return next(err);
         res.json(elemento);
     });
 });
 
-app.post('/api/:coleccion', /*auth,*/ (req,res,next) => {
+app.post('/api/user', /*auth,*/ (req,res,next) => {
     const elemento = req.body;
 
     if(!elemento.nombre){
@@ -96,14 +96,14 @@ app.post('/api/:coleccion', /*auth,*/ (req,res,next) => {
             description: 'Se precisa al menos un campo <nombre>'
         });
     } else {
-        req.collection.save(elemento, (err, coleccionGuardada) => {
+        req.collection.save(elemento, (err, usuarioGuardado) => {
             if(err) return next(err);
-                res.json(coleccionGuardada);
+                res.json(usuarioGuardado);
         });
     }
 });
 
-app.put('/api/:coleccion/:id', /*auth,*/ (req,res,next) => {
+app.put('/api/user/:id', /*auth,*/ (req,res,next) => {
     let elementoId = req.params.id;
     let elementoNuevo = req.body;
     req.collection.update({_id: id(elementoId)},
@@ -113,7 +113,7 @@ app.put('/api/:coleccion/:id', /*auth,*/ (req,res,next) => {
     });
 });
 
-app.delete('/api/:coleccion/:id', /*auth,*/ (req,res,next) => {
+app.delete('/api/user/:id', /*auth,*/ (req,res,next) => {
     let elementoId = req.params.id;
 
     req.collection.remove({_id: id(elementoId)}, (err,resultado) => {
@@ -129,5 +129,5 @@ app.delete('/api/:coleccion/:id', /*auth,*/ (req,res,next) => {
 
 //iniciem l'aplicació
 app.listen(port, () => {
-    console.log(`API REST ejecutándose en http://localhost:${port}/api/:coleccion/:id`);
+    console.log(`API REST ejecutándose en http://localhost:${port}/api/user/:id`);
 });
