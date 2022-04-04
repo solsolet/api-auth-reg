@@ -133,10 +133,73 @@ Creamos el archivo `index.js`.
 ```
 $ touch index.js
 ```
-### Servidor node+express
-Hacemos primero que un servidor que sea funcional antes que nada.
+### Gestión de usuarios
+Para empezar implementamos las funciones de GET, POST, PUT y DELETE para poder consultar, publicar modificar y borrar usuarios.
+#### GET
+Para obtener tanto todos los usuarios del distema como uno determinado
 ```
+app.get('/api/user', (req,res,next) => {
+    db.user.find((err, user) => {
+        if (err) return next(err);
+        res.json(user);
+    });
+});
+
+app.get('/api/user/:id', (req,res,next) => {
+    db.user.findOne({_id: id(req.params.id)}, (err,elemento) => {
+        if (err) return next(err);
+        res.json(elemento);
+    });
+});
 ```
+#### POST
+Registramos un nuevo usuario con toda su información
+```
+app.post('/api/user', (req,res,next) => {
+    const elemento = req.body;
+
+    if(!elemento.nombre){
+        res.status(400).json ({
+            error: 'Bad data',
+            description: 'Se precisa al menos un campo <nombre>'
+        });
+    } else {
+        db.user.save(elemento, (err, usuarioGuardado) => {
+            if(err) return next(err);
+                res.json(usuarioGuardado);
+        });
+    }
+});
+```
+#### PUT
+Modificamos al usuario {id}
+```
+app.put('/api/user/:id', (req,res,next) => {
+    let elementoId = req.params.id;
+    let elementoNuevo = req.body;
+    db.user.update({_id: id(elementoId)},
+            {$set: elementoNuevo}, {safe: true, multi:false}, (err,elementoModif) => {
+        if (err) return next(err);
+        res.json(elementoModif);
+    });
+});
+```
+#### DELETE
+Eliminamos al usuarip {id}
+```
+app.delete('/api/user/:id', /*auth,*/ (req,res,next) => {
+    let elementoId = req.params.id;
+
+    db.user.remove({_id: id(elementoId)}, (err,resultado) => {
+        if(err) return next(err);
+        res.json(resultado);
+    });
+});
+```
+### Gestión de las autorizaciones
+
+#### GET
+#### POST
 
 ### Criptografía y Tokens 🔑
 

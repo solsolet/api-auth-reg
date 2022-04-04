@@ -62,17 +62,6 @@ app.use(express.json());
 });*/
 
 //Gestió d'usuaris
-/*app.get('/api', (req,res,next) => {
-    console.log('GET/api');
-    console.log(req.params);
-    console.log(req.collection);
-
-    db.getCollectionNames((err,colecciones) => {
-        if (err) return next(err);
-        res.json(colecciones);
-    });
-});*/
-
 //obtenim tots els usuaris registrats en el sistema
 app.get('/api/user', (req,res,next) => {
     db.user.find((err, user) => {
@@ -125,6 +114,58 @@ app.delete('/api/user/:id', /*auth,*/ (req,res,next) => {
         if(err) return next(err);
         res.json(resultado);
     });
+});
+
+//Gestió d'autiritzacions
+//obtenim tots els usuaris registrats en el sistema. Versió reduida de GET api/user
+app.get('/api/auth', (req,res,next) => {
+    db.user.find((err, auth) => {
+        if (err) return next(err);
+        res.json(auth);
+    });
+});
+
+//obtenim usuari a partir de token válid
+//revisar
+app.get('/api/auth/me', (req,res,next) => {
+    db.user.find((err, auth) => {
+        if (err) return next(err);
+        res.json(auth);
+    });
+});
+
+//realitza una identificació o login (signIn) i torna un token válid
+app.post('/api/auth', /*auth,*/ (req,res,next) => {
+    const elemento = req.body;
+
+    if(!elemento.nombre){
+        res.status(400).json ({
+            error: 'Bad data',
+            description: 'Se precisa al menos un campo <nombre>'
+        });
+    } else {
+        db.user.save(elemento, (err, usuarioGuardado) => {
+            if(err) return next(err);
+                res.json(usuarioGuardado);
+        });
+    }
+});
+
+//realitza un registre mínim (signUp) d'un usuari i torna un token válid
+app.post('/api/reg', /*auth,*/ (req,res,next) => {
+    const elemento = req.body;
+
+    if(!elemento.nombre){
+        res.status(400).json ({
+            error: 'Bad data',
+            description: 'Se precisa al menos un campo <nombre>'
+        });
+    } else {
+        db.user.save(elemento, (err, usuarioGuardado) => {
+            if(err) return next(err);
+                res.json(usuarioGuardado);
+        });
+    }
 });
 
 //creem server https que inicia l'app
