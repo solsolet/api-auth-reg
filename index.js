@@ -1,7 +1,7 @@
 //API RESTFul CRUD amb Mongo
 'use strict'
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001; //tindre cuidao d no posar sempre el mateix port
 
 //després fem segur el servei
 /*const https = require('https');//obliga a express a treballar en esta libreria
@@ -73,20 +73,23 @@ app.use(express.json());
     });
 });*/
 
+//obtenim tots els usuaris registrats en el sistema
 app.get('/api/user', (req,res,next) => {
-    req.collection.find((err, user) => {
+    db.user.find((err, user) => {
         if (err) return next(err);
         res.json(user);
     });
 });
 
+//obtenim l'usuari indicat en {id}
 app.get('/api/user/:id', (req,res,next) => {
-    req.collection.findOne({_id: id(req.params.id)}, (err,elemento) => {
+    db.user.findOne({_id: id(req.params.id)}, (err,elemento) => {
         if (err) return next(err);
         res.json(elemento);
     });
 });
 
+//registrem un nou usuari amb tota la seua info
 app.post('/api/user', /*auth,*/ (req,res,next) => {
     const elemento = req.body;
 
@@ -96,27 +99,29 @@ app.post('/api/user', /*auth,*/ (req,res,next) => {
             description: 'Se precisa al menos un campo <nombre>'
         });
     } else {
-        req.collection.save(elemento, (err, usuarioGuardado) => {
+        db.user.save(elemento, (err, usuarioGuardado) => {
             if(err) return next(err);
                 res.json(usuarioGuardado);
         });
     }
 });
 
+//modifiquem l'usuari {id}
 app.put('/api/user/:id', /*auth,*/ (req,res,next) => {
     let elementoId = req.params.id;
     let elementoNuevo = req.body;
-    req.collection.update({_id: id(elementoId)},
+    db.user.update({_id: id(elementoId)},
             {$set: elementoNuevo}, {safe: true, multi:false}, (err,elementoModif) => {
         if (err) return next(err);
         res.json(elementoModif);
     });
 });
 
+//eliminem l'usuari {id}
 app.delete('/api/user/:id', /*auth,*/ (req,res,next) => {
     let elementoId = req.params.id;
 
-    req.collection.remove({_id: id(elementoId)}, (err,resultado) => {
+    db.user.remove({_id: id(elementoId)}, (err,resultado) => {
         if(err) return next(err);
         res.json(resultado);
     });
