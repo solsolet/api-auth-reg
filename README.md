@@ -23,7 +23,7 @@ Una vez tengamos nuestra máquina preparada ya podemos empezar a instalar todos 
 ### Instalación 🔧
 
 Para la ejecución de esta práctica se necesita tener:
-* NodeJS (con express, bcrypt, moment y jwt-simple)
+* NodeJS (con express, cors, bcrypt, moment y jwt-simple)
 * Git
 * Code (o similar)
 * MongoBD (con mongodb y mongojs)
@@ -59,6 +59,7 @@ $ npm i -S mongojs
 $ npm i -S bcrypt
 $ npm i -S moment
 $ npm i -S jwt-simple
+$ npm i -S cors
 ```
 
 Preparamos algunos programas:

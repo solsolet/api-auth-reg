@@ -16,6 +16,7 @@
     "REST",
     "node",
     "express",
+    "cors",
     "mongo",
     "jwt",
     "token",
@@ -29,6 +30,7 @@
   },
   "homepage": "https://github.com/solsolet/api-auth-reg#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.3",
     "mongodb": "^4.4.1",
     "mongojs": "^3.1.0",
