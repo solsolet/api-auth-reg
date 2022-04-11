@@ -1,9 +1,9 @@
 //API RESTFul CRUD amb Mongo
 'use strict'
 
-const port = process.env.PORT || 3001; //compte, no posar sempre el mateix port
+const port = process.env.PORT || require('./config').port; /*el port que haja en config*/
 
-//després fem segur el servei
+//fem segur el servei
 const https = require('https'); //obliga a express a treballar en esta libreria
 const fs = require('fs'); //que puga accedir al file system
 
@@ -16,6 +16,11 @@ const express = require('express');
 const logger = require('morgan');
 const mongojs = require('mongojs');
 const cors = require('cors');
+
+const bcrypt = require('bcrypt');
+const TokenService = require('./services/token.service');
+const PassService = require ('./services/pass.service');
+const moment = require('moment');
 
 const app = express();
 
@@ -108,17 +113,33 @@ app.delete('/api/user/:id', auth, (req,res,next) => {
 
 
 //Gestió d'autiritzacions
+//funció per a autoritzar nsq
+function auth(req,res,next) {
+    const token = req.headers.authoritation.split(' ')[1];
+    tokenService.decodificaToken(token)
+    .then (userId => {
+        req.user = { id: userId}
+        return next()
+    })
+    .catch (err => res.status(400).json({result: 'ko', msg: err}));
+}
+
 //obtenim tots els usuaris registrats en el sistema. Versió reduida de GET api/user
 app.get('/api/auth', (req,res,next) => {
     db.user.find((err, auth) => {
         if (err) return next(err);
-        res.json(auth);
+        res.json(auth.email); //anar provant com tornar bé els params
     });
+    /*
+    db.user.find({}, {_id:0, nombre: 1, email: 1}) //si no s'exclueix explícitament el :id ix
+    podria ser útil el .toArray??
+    */ 
 });
 
 //obtenim usuari a partir de token válid
 //revisar
 app.get('/api/auth/me', (req,res,next) => {
+    //mirar si .findOne()
     db.user.find((err, auth) => {
         if (err) return next(err);
         res.json(auth);
@@ -127,15 +148,16 @@ app.get('/api/auth/me', (req,res,next) => {
 
 //realitza una identificació o login (signIn) i torna un token válid
 app.post('/api/auth', auth, (req,res,next) => {
-    const elemento = req.body;
+    const usuari = req.body;
 
-    if(!elemento.nombre){
+    if(!usuari.nombre || !usuari.email){
         res.status(400).json ({
             error: 'Bad data',
-            description: 'Se precisa al menos un campo <nombre>'
+            description: 'Se precisa al menos los campos <nombre> y <password>'
         });
     } else {
-        db.user.save(elemento, (err, usuarioGuardado) => {
+        //comprovar q el usuari no existisca ja
+        db.user.save(usuari, (err, usuarioGuardado) => {
             if(err) return next(err);
                 res.json(usuarioGuardado);
         });
@@ -144,15 +166,15 @@ app.post('/api/auth', auth, (req,res,next) => {
 
 //realitza un registre mínim (signUp) d'un usuari i torna un token válid
 app.post('/api/reg', auth, (req,res,next) => {
-    const elemento = req.body;
+    const usuari = req.body;
 
-    if(!elemento.nombre){
+    if(!usuari.nombre || !usuari.email || !usuari.password){
         res.status(400).json ({
             error: 'Bad data',
             description: 'Se precisa al menos un campo <nombre>'
-        });
+        });//anem per ací
     } else {
-        db.user.save(elemento, (err, usuarioGuardado) => {
+        db.user.save(usuari, (err, usuarioGuardado) => {
             if(err) return next(err);
                 res.json(usuarioGuardado);
         });

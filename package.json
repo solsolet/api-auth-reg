@@ -30,8 +30,11 @@
   },
   "homepage": "https://github.com/solsolet/api-auth-reg#readme",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "express": "^4.17.3",
+    "jwt-simple": "^0.5.6",
+    "moment": "^2.29.2",
     "mongodb": "^4.4.1",
     "mongojs": "^3.1.0",
     "morgan": "^1.10.0"

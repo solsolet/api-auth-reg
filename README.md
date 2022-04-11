@@ -202,7 +202,7 @@ app.delete('/api/user/:id', /*auth,*/ (req,res,next) => {
 #### GET
 #### POST
 
-### HTTPS
+### HTTPS 🔒
 Para que nuestras opraciones sean seguras implementamos la carpeta **cer** donde está el certificado y la clave que usaremos en `index.js` para hacer uso del protocolo https. Préviamente habremos instalado la librería de **cors**
 ```
 const https = require('https');
@@ -244,6 +244,7 @@ app.use(allowMethods);
 app.use(allowCrossTokenHeader);
 app.use(allowCrossTokenOrigin);
 ```
+Menos para los GET, para el resto de funciones añadiremos el parámetro de entrada **auth**.
 
 ### Criptografía y Tokens 🔑
 
