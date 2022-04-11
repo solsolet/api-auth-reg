@@ -1,11 +1,11 @@
 //API RESTFul CRUD amb Mongo
 'use strict'
 
-const port = process.env.PORT || 3001; //tindre cuidao d no posar sempre el mateix port
+const port = process.env.PORT || 3001; //compte, no posar sempre el mateix port
 
 //després fem segur el servei
-const https = require('https');//obliga a express a treballar en esta libreria
-const fs = require('fs');//que puga accedir al file system
+const https = require('https'); //obliga a express a treballar en esta libreria
+const fs = require('fs'); //que puga accedir al file system
 
 const OPTIONS_HTTPS = { //declarar clau privada i certificat
     key: fs.readFileSync('./cer/key.pen'),
@@ -46,7 +46,6 @@ var auth = (req,res,next) => {
 app.use(logger('dev')); //probar amb: tiny, short, dev, common, combined
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
-//no va lo de les cors
 app.use(cors());
 app.use(allowMethods);
 app.use(allowCrossTokenHeader);
@@ -106,6 +105,7 @@ app.delete('/api/user/:id', auth, (req,res,next) => {
         res.json(resultado);
     });
 });
+
 
 //Gestió d'autiritzacions
 //obtenim tots els usuaris registrats en el sistema. Versió reduida de GET api/user

@@ -202,6 +202,49 @@ app.delete('/api/user/:id', /*auth,*/ (req,res,next) => {
 #### GET
 #### POST
 
+### HTTPS
+Para que nuestras opraciones sean seguras implementamos la carpeta **cer** donde está el certificado y la clave que usaremos en `index.js` para hacer uso del protocolo https. Préviamente habremos instalado la librería de **cors**
+```
+const https = require('https');
+const fs = require('fs');
+
+const OPTIONS_HTTPS = { //declarar clau privada i certificat
+    key: fs.readFileSync('./cer/key.pen'),
+    cert: fs.readFileSync('./cer/cert.pen')
+};
+
+const cors = require('cors');
+```
+Luego hacemos unos cuantos middleware:
+```
+var allowMethods = (req,res,next) => {
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    return next();
+};
+var allowCrossTokenHeader = (req,res,next) => {
+    res.header("Access-Control-Allow-Headers", "token");
+    return next();
+};
+var allowCrossTokenOrigin = (req,res,next) => {
+    res.header("Acces-Control-Allow-Origin", "*");
+    return next();
+};
+var auth = (req,res,next) => {
+    if(req.headers.token === "password1234"){
+        return next();
+    } else {
+        return next(new Error("No autorizado"));
+    };
+};
+```
+Y los usamos:
+```
+app.use(cors());
+app.use(allowMethods);
+app.use(allowCrossTokenHeader);
+app.use(allowCrossTokenOrigin);
+```
+
 ### Criptografía y Tokens 🔑
 
 Creamos nuestro repositorio. En `01_bcrypt.js`, importamos la librería **bcrypt** y ponemos nuestros datos para la simulación.
