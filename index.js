@@ -157,6 +157,7 @@ app.post('/api/auth', auth, (req,res,next) => {
         });
     } else {
         //comprovar q el usuari no existisca ja
+        //comprovar password
         db.user.save(usuari, (err, usuarioGuardado) => {
             if(err) return next(err);
                 res.json(usuarioGuardado);
@@ -171,19 +172,30 @@ app.post('/api/reg', auth, (req,res,next) => {
     if(!usuari.nombre || !usuari.email || !usuari.password){
         res.status(400).json ({
             error: 'Bad data',
-            description: 'Se precisa al menos un campo <nombre>'
+            description: 'Se precisa del campo <nombre>, <email> y <password>'
         });//anem per ací
     } else {
+        //comprovar q el usuari no existisca ja
+        //comprovar password
+
+        usuari.signUpDate = moment().unix();
+        usuari.lastLogin = moment().unix();
         db.user.save(usuari, (err, usuarioGuardado) => {
             if(err) return next(err);
-                res.json(usuarioGuardado);
+            else {
+                res.json({
+                    "result": "OK",
+                    "token": TokenService.creaToken(usuarioGuardado),
+                    "usuario": usuarioGuardado
+                });
+            }     
         });
     }
 });
 
 //creem server https que inicia l'app
 https.createServer(OPTIONS_HTTPS, app).listen(port, () => {
-    console.log(`SCR WS API REST CRUD ejecutándose en https://localhost:${port}/api/user/:id`);
+    console.log(`SCR WS API REST CRUD ejecutándose en https://localhost:${port}/api`);
 });
 
 //iniciem l'aplicació
