@@ -118,7 +118,7 @@ function auth(req,res,next) {
     const token = req.headers.authoritation.split(' ')[1];
     tokenService.decodificaToken(token)
     .then (userId => {
-        req.user = { id: userId}
+        req.user = { id: userId }
         return next()
     })
     .catch (err => res.status(400).json({result: 'ko', msg: err}));
@@ -126,14 +126,10 @@ function auth(req,res,next) {
 
 //obtenim tots els usuaris registrats en el sistema. Versió reduida de GET api/user
 app.get('/api/auth', (req,res,next) => {
-    db.user.find((err, auth) => {
-        if (err) return next(err);
-        res.json(auth.email); //anar provant com tornar bé els params
+    db.user.find({}, {_id:0, nombre: 1, email: 1}, (err,usuaris) => { //si no s'exclueix explícitament el :id ix
+        if(err) return next(err);
+        else res.json(usuaris);
     });
-    /*
-    db.user.find({}, {_id:0, nombre: 1, email: 1}) //si no s'exclueix explícitament el :id ix
-    podria ser útil el .toArray??
-    */ 
 });
 
 //obtenim usuari a partir de token válid
@@ -150,17 +146,35 @@ app.get('/api/auth/me', (req,res,next) => {
 app.post('/api/auth', auth, (req,res,next) => {
     const usuari = req.body;
 
-    if(!usuari.nombre || !usuari.email){
+    if(!usuari.email || !usuari.password){
         res.status(400).json ({
             error: 'Bad data',
-            description: 'Se precisa al menos los campos <nombre> y <password>'
+            description: 'Se precisa al menos los campos <email> y <password>'
         });
     } else {
-        //comprovar q el usuari no existisca ja
-        //comprovar password
+        //comprovar q esta l'usuari
+        db.user.findOne({ email: (usuari.email) }, (err, emilio) => { //emilio jaja k gracioso no
+            if(err) return next(err);
+            else if(!emilio){
+                res.status(400).json ({ //el 400 estarà bé?
+                    error: 'Bad data',
+                    description: `No se encuentra el usuario ${usuari.email}` //funcionara??
+                });
+            }
+            else {
+                //oleole q si esta, comprovar password
+            }
+        });
+        
         db.user.save(usuari, (err, usuarioGuardado) => {
             if(err) return next(err);
-                res.json(usuarioGuardado);
+            else {
+                res.json({
+                    "result": "OK",
+                    "token": TokenService.creaToken(usuarioGuardado),
+                    "usuario": usuarioGuardado
+                });
+            }
         });
     }
 });
@@ -173,7 +187,7 @@ app.post('/api/reg', auth, (req,res,next) => {
         res.status(400).json ({
             error: 'Bad data',
             description: 'Se precisa del campo <nombre>, <email> y <password>'
-        });//anem per ací
+        });
     } else {
         //comprovar q el usuari no existisca ja
         //comprovar password
