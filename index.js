@@ -166,6 +166,8 @@ app.post('/api/auth', auth, (req,res,next) => {
             else {
                 //comprovar password
                 if(PassService.comparaPassword(usuari.password, emilio.password)) {
+                    console.log(PassService.comparaPassword(usuari.password, emilio.password)); //es queda pendent
+                    //console.log(emilio.password + ' ' + usuari.password);
                     emilio.lastLogin = moment().unix();
                     res.json({
                         "result": "OK",

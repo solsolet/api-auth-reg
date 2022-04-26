@@ -9,14 +9,14 @@ const bcrypt = require('bcrypt');
 //     Alg Cost             Salt                      Hash
 
 function encriptaPassword( password ) {
-    return bcrypt.hash( password, 10 ); //10 es podria canviar x variable, en el nostre cas es cte
+    return bcrypt.hash( password, 10 ).then(function(result){}); //10 es podria canviar x variable, en el nostre cas es cte
 }
 
 //ComparaPassword
 //  devolver verdadero o falso si coinciden o no el pass y hash
 
 function comparaPassword( password, hash ){
-    return bcrypt.compare( password, hash);
+    return bcrypt.compare( password, hash).then(function(result){}); //llevar lo asíncrono
 }
 
 module.exports = {
