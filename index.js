@@ -113,15 +113,15 @@ app.delete('/api/user/:id', auth, (req,res,next) => {
 
 
 //Gestió d'autiritzacions
-//funció per a autoritzar nsq
+//funció per a autoritzar nsq. Afegir en tot com a variable auth??
 function auth(req,res,next) {
     const token = req.headers.authoritation.split(' ')[1];
-    tokenService.decodificaToken(token)
-    .then (userId => {
-        req.user = { id: userId }
-        return next()
-    })
-    .catch (err => res.status(400).json({result: 'ko', msg: err}));
+    TokenService.decodificaToken(token)
+        .then (userId => {
+            req.user = { id: userId }
+            return next();
+        })
+        .catch (err => res.status(400).json({result: 'ko', msg: err}));
 }
 
 //obtenim tots els usuaris registrats en el sistema. Versió reduida de GET api/user
@@ -136,6 +136,8 @@ app.get('/api/auth', (req,res,next) => {
 //revisar
 app.get('/api/auth/me', (req,res,next) => {
     //mirar si .findOne()
+
+    //buscar usuari en bd
     db.user.find((err, auth) => {
         if (err) return next(err);
         res.json(auth);
@@ -158,22 +160,25 @@ app.post('/api/auth', auth, (req,res,next) => {
             else if(!emilio){
                 res.status(400).json ({ //el 400 estarà bé?
                     error: 'Bad data',
-                    description: `No se encuentra el usuario ${usuari.email}` //funcionara??
+                    description: `No se encuentra el usuario ${usuari.email}`
                 });
             }
             else {
-                //oleole q si esta, comprovar password
-            }
-        });
-        
-        db.user.save(usuari, (err, usuarioGuardado) => {
-            if(err) return next(err);
-            else {
-                res.json({
-                    "result": "OK",
-                    "token": TokenService.creaToken(usuarioGuardado),
-                    "usuario": usuarioGuardado
-                });
+                //comprovar password
+                if(PassService.comparaPassword(usuari.password, emilio.password)) {
+                    emilio.lastLogin = moment().unix();
+                    res.json({
+                        "result": "OK",
+                        "token": TokenService.creaToken(emilio),
+                        "usuario": emilio
+                    });
+                }
+                else {
+                    res.status(400).json ({
+                        error: 'Bad data',
+                        description: `La contraseña ${usuari.password} no es la correcta` //canviar de cara al futur
+                    });
+                }
             }
         });
     }
