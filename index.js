@@ -137,7 +137,7 @@ app.get('/api/auth', (req,res,next) => {
 app.get('/api/auth/me', (req,res,next) => {
     //mirar si .findOne()
 
-    //buscar usuari en bd
+    //busca usuari en bd
     db.user.find((err, auth) => {
         if (err) return next(err);
         res.json(auth);
@@ -166,7 +166,7 @@ app.post('/api/auth', auth, (req,res,next) => {
             else {
                 //comprovar password
                 if(PassService.comparaPassword(usuari.password, emilio.password)) {
-                    console.log(PassService.comparaPassword(usuari.password, emilio.password)); //es queda pendent
+                    //console.log(PassService.comparaPassword(usuari.password, emilio.password)); //es queda pendent
                     //console.log(emilio.password + ' ' + usuari.password);
                     emilio.lastLogin = moment().unix();
                     res.json({
@@ -197,19 +197,32 @@ app.post('/api/reg', auth, (req,res,next) => {
         });
     } else {
         //comprovar q el usuari no existisca ja
-        //comprovar password
-
-        usuari.signUpDate = moment().unix();
-        usuari.lastLogin = moment().unix();
-        db.user.save(usuari, (err, usuarioGuardado) => {
+        db.user.findOne({ email: (usuari.email) }, (err, emilio) => { //emilio jaja k gracioso no
             if(err) return next(err);
-            else {
-                res.json({
-                    "result": "OK",
-                    "token": TokenService.creaToken(usuarioGuardado),
-                    "usuario": usuarioGuardado
+            else if(!emilio){
+                //encriptar password
+                usuari.password = PassService.encriptaPassword(usuari.password);
+                //creem
+                usuari.signUpDate = moment().unix();
+                usuari.lastLogin = moment().unix();
+
+                db.user.save(usuari, (err, usuarioGuardado) => {
+                    if(err) return next(err);
+                    else {
+                        res.json({
+                            "result": "OK",
+                            "token": TokenService.creaToken(usuarioGuardado),
+                            "usuario": usuarioGuardado
+                        });
+                    }     
                 });
-            }     
+            }
+            else {
+                res.status(400).json ({
+                    error: 'Bad data',
+                    description: `El email ${usuari.email} ya existe, use otro`
+                });
+            }
         });
     }
 });
