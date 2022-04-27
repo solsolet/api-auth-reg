@@ -11,6 +11,16 @@
 				{
 					"name": "/api/user",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjY5N2M4MmFiNmZjZDlhYjUwMjQ1YWQiLCJpYXQiOjE2NTEwODAzMjIsImV4cCI6MTY1MTY4NTEyMn0.UZOu89mSjbrX3wifSN1vCkym2HjbzzXpmuyyhQYTVeQ",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -31,6 +41,16 @@
 				{
 					"name": "/api/user/{id}",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjY5N2M4MmFiNmZjZDlhYjUwMjQ1YWQiLCJpYXQiOjE2NTEwODAzMjIsImV4cCI6MTY1MTY4NTEyMn0.UZOu89mSjbrX3wifSN1vCkym2HjbzzXpmuyyhQYTVeQ",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -52,6 +72,16 @@
 				{
 					"name": "/api/user",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjY5N2M4MmFiNmZjZDlhYjUwMjQ1YWQiLCJpYXQiOjE2NTEwODAzMjIsImV4cCI6MTY1MTY4NTEyMn0.UZOu89mSjbrX3wifSN1vCkym2HjbzzXpmuyyhQYTVeQ",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -62,7 +92,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nombre\": \"Daniela Lloret\", \n    \"email\": \"dlc1@alu.ua.es\",\n    \"pass\": \"1234\"\n}",
+							"raw": "{\n    \"nombre\": \"Aina Llorca\", \n    \"email\": \"all981@alu.ua.es\",\n    \"password\": \"1234\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -87,6 +117,16 @@
 				{
 					"name": "/api/user/{id}",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjY5N2M4MmFiNmZjZDlhYjUwMjQ1YWQiLCJpYXQiOjE2NTEwODAzMjIsImV4cCI6MTY1MTY4NTEyMn0.UZOu89mSjbrX3wifSN1vCkym2HjbzzXpmuyyhQYTVeQ",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [
 							{
@@ -114,6 +154,16 @@
 				{
 					"name": "/api/user/{id}",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjY5N2M4MmFiNmZjZDlhYjUwMjQ1YWQiLCJpYXQiOjE2NTEwODAzMjIsImV4cCI6MTY1MTY4NTEyMn0.UZOu89mSjbrX3wifSN1vCkym2HjbzzXpmuyyhQYTVeQ",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [
 							{
@@ -142,6 +192,152 @@
 								"api",
 								"user",
 								"6251a2408316e6e02c8d43dc"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "api/auth",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:3001/api/auth",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "api/auth/me",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjY5N2M4MmFiNmZjZDlhYjUwMjQ1YWQiLCJpYXQiOjE2NTEwODAzMjIsImV4cCI6MTY1MTY4NTEyMn0.UZOu89mSjbrX3wifSN1vCkym2HjbzzXpmuyyhQYTVeQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:3001/api/auth/me",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"auth",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "api/reg",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjY4NjhhNGU3YzJlNzdhYWIwYmM2OWEiLCJpYXQiOjE2NTEwMDk3MDAsImV4cCI6MTY1MTYxNDUwMH0.291f5Wm-dJRcYeq3bDUeHEBAOn23HNCZo-qkdaKGMn0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "password1234",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": \"Lucia Domenech\",\n    \"email\": \"ldp21@gmail.com\",\n    \"password\": \"2109\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:3001/api/reg",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"reg"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "api/auth",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MjY4NjhhNGU3YzJlNzdhYWIwYmM2OWEiLCJpYXQiOjE2NTEwMDk3MDAsImV4cCI6MTY1MTYxNDUwMH0.291f5Wm-dJRcYeq3bDUeHEBAOn23HNCZo-qkdaKGMn0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "password1234",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"gsl21@alu.ua.es\",\n    \"password\": \"1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:3001/api/auth",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"auth"
 							]
 						}
 					},
