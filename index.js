@@ -41,14 +41,6 @@ var allowCrossTokenOrigin = (req,res,next) => {
     return next();
 };
 
-/*var auth = (req,res,next) => {
-    if(req.headers.token === "password1234"){
-        return next();
-    } else {
-        return next(new Error("No autorizado"));
-    };
-};*/
-
 app.use(logger('dev')); //probar amb: tiny, short, dev, common, combined
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
@@ -117,7 +109,7 @@ app.delete('/api/user/:id', auth, (req,res,next) => {
 //Gestió d'autiritzacions
 //funció per a autoritzar nsq. Afegir en tot com a variable auth??
 function auth (req,res,next) {
-    const token = req.headers.authorization.split(" ")[1];
+    const token = req.headers.authorization.split(" ")[1]; //que tia + tonta ni escriure be podies no??
     
     TokenService.decodificaToken(token)
         .then (userId => {
@@ -240,7 +232,7 @@ app.post('/api/reg', (req,res,next) => {
 
 //creem server https que inicia l'app
 https.createServer(OPTIONS_HTTPS, app).listen(port, () => {
-    console.log(`SCR WS API REST CRUD ejecutándose en https://localhost:${port}/api`);
+    console.log(`WS RESTFul de Registro y Autenticación ejecutándose en https://localhost:${port}/api`);
 });
 
 //iniciem l'aplicació

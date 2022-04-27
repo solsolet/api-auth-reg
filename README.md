@@ -136,69 +136,17 @@ $ touch index.js
 ```
 ### Gestión de usuarios
 Para empezar implementamos las funciones de GET, POST, PUT y DELETE para poder consultar, publicar modificar y borrar usuarios.
+
 #### GET
 Para obtener tanto todos los usuarios del distema como uno determinado
-```
-app.get('/api/user', (req,res,next) => {
-    db.user.find((err, user) => {
-        if (err) return next(err);
-        res.json(user);
-    });
-});
-
-app.get('/api/user/:id', (req,res,next) => {
-    db.user.findOne({_id: id(req.params.id)}, (err,elemento) => {
-        if (err) return next(err);
-        res.json(elemento);
-    });
-});
-```
 #### POST
 Registramos un nuevo usuario con toda su información
-```
-app.post('/api/user', (req,res,next) => {
-    const elemento = req.body;
-
-    if(!elemento.nombre){
-        res.status(400).json ({
-            error: 'Bad data',
-            description: 'Se precisa al menos un campo <nombre>'
-        });
-    } else {
-        db.user.save(elemento, (err, usuarioGuardado) => {
-            if(err) return next(err);
-                res.json(usuarioGuardado);
-        });
-    }
-});
-```
 #### PUT
 Modificamos al usuario {id}
-```
-app.put('/api/user/:id', (req,res,next) => {
-    let elementoId = req.params.id;
-    let elementoNuevo = req.body;
-    db.user.update({_id: id(elementoId)},
-            {$set: elementoNuevo}, {safe: true, multi:false}, (err,elementoModif) => {
-        if (err) return next(err);
-        res.json(elementoModif);
-    });
-});
-```
 #### DELETE
 Eliminamos al usuarip {id}
-```
-app.delete('/api/user/:id', /*auth,*/ (req,res,next) => {
-    let elementoId = req.params.id;
 
-    db.user.remove({_id: id(elementoId)}, (err,resultado) => {
-        if(err) return next(err);
-        res.json(resultado);
-    });
-});
-```
 ### Gestión de las autorizaciones
-
 #### GET
 Obtenemos todos los usuarios registrados en el sistema (versión reducida) o uno solo a partir de un token válido.
 
@@ -228,25 +176,9 @@ const cors = require('cors');
 ```
 Luego hacemos unos cuantos middleware:
 ```
-var allowMethods = (req,res,next) => {
-    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-    return next();
-};
-var allowCrossTokenHeader = (req,res,next) => {
-    res.header("Access-Control-Allow-Headers", "token");
-    return next();
-};
-var allowCrossTokenOrigin = (req,res,next) => {
-    res.header("Acces-Control-Allow-Origin", "*");
-    return next();
-};
-var auth = (req,res,next) => {
-    if(req.headers.token === "password1234"){
-        return next();
-    } else {
-        return next(new Error("No autorizado"));
-    };
-};
+var allowMethods = (req,res,next) => {...}
+var allowCrossTokenHeader = (req,res,next) => {...}
+var allowCrossTokenOrigin = (req,res,next) => {...}
 ```
 Y los usamos:
 ```
@@ -255,10 +187,9 @@ app.use(allowMethods);
 app.use(allowCrossTokenHeader);
 app.use(allowCrossTokenOrigin);
 ```
-Menos para los GET, para el resto de funciones añadiremos el parámetro de entrada **auth**.
+Para todas las funciones que necesiten de autorización añadiremos el parámetro de entrada **auth**.
 
 ### Criptografía y Tokens 🔑
-
 Creamos nuestro repositorio. En `01_bcrypt.js`, importamos la librería **bcrypt** y ponemos nuestros datos para la simulación.
 ```
 const bcrypt = require('bcrypt');
@@ -267,7 +198,6 @@ const miPass = 'miContraseña';
 const badPass = 'miotraContraseña';
 ```
 ### Hash y Passwords encriptados
-
 Creamos el **Salt** y lo utilizamos para generar el **Hash**
 ```
 bcrypt.genSalt( ... ) => { 
@@ -288,23 +218,26 @@ bcrypt.hash( miPass, 10, (err, hash) => {
 });
 ```
 ### Moment: fechas y tiempos ⏰
-Podemos hacer ppruebas con moment desde la terminal para ver alguna de sus funciones
+Podemos hacer pruebas con `moment` desde la terminal para ver alguna de sus funciones
 ```
 $ date()
 $ moment()
 $ moment().unix()
-...
 ```
-### Services
 
-Creamos una carpeta **services** y hacemos los archivos `pass.services.js` y `token.service.js`. En el primero encriptaremos el password y lo compararemos, en el segundo crearemos el token y lo decodificaremos
+### Services
+Creamos una carpeta **services** y hacemos los archivos `pass.services.js` y `token.service.js`. En el primero encriptaremos el password y lo compararemos, en el segundo crearemos el token y lo decodificaremos.
 
 ## Servicio Auth JWT (tokens) ✅
-
 Creamos fuera de  services los archivos `pass-test.js`, `config.js` y `jwt-test.js`.
 
-## Construido con 🛠️
+## Ejecutando las pruebas ⚙️
+Una vez picado el código correctamente, para su ejecución usaremos **Postman** y haremos las peticiones pertinentes. Todas ellas se encuentran en el archivo `postam_collection.json`.
 
+Podemos ver que en Auth está elegido el `Type` Bearer Token y el token es el de un usuario cualquiera. Esta autorización es tratada con la función **auth** de `index.js`.
+
+
+## Construido con 🛠️
 * [VS Code](https://code.visualstudio.com) - Editor de texto
 * [Postman](http://www.postman.com) - Plataforma API
 * [MongoDB](https://www.mongodb.com) - Base de Datos
@@ -314,14 +247,10 @@ Creamos fuera de  services los archivos `pass-test.js`, `config.js` y `jwt-test.
 * [JWT-simple](https://npmjs.com/package/jwt-simple) - Librería
 
 ## Versionado 📌
-
 Para todas las versiones disponibles, mira los [tags](https://github.com/tu/proyecto/tags).
 
 ## Autora ✒️
-
 * **Gemma Sellés** - *Desarrollo de la práctica* - [gls21](https://github.com/solsolet)
 
-
 ## Licencia 📄
-
 Este proyecto no está bajo ninguna licencia.
