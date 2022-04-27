@@ -203,12 +203,12 @@ app.delete('/api/user/:id', /*auth,*/ (req,res,next) => {
 Obtenemos todos los usuarios registrados en el sistema (versión reducida) o uno solo a partir de un token válido.
 
 #### POST
-Realiza un SingIn o un SingUp y devuelve un token válido.
-En ambos hay que rellenar el body de la petición en Postman con los campos que sean requeridos y devolverá una respuesta en un formato concreto (`result`, `token` y `usuario`).
-##### SingIn
+Realiza un SingIn o SingUp y devuelve un token válido.
+En ambos hay que rellenar el `body` de la petición en Postman con los campos requeridos y devolverá una respuesta en el formato `result`, `token` y `usuario`.
+##### SingIn 📲
 **api/auth**: identifica al usuario con el `email` y `password`. Se requieren obligatoriamente.
 Comprueba que exista el email en la BD y que el password coincida (en `pass.service.js` las funciones se han vuelto síncronas para que funcione). También actualiza `lastLogin`.
-##### SingUp
+##### SingUp 📝
 **api/reg**: registro mínimo de usuario con el `nombre`, `email` y `password`. Se requieren obligatoriamente.
 Comprueba que no exista el email en la BD y encripta el password. Añade `signUpDate`, `lastLogin` y guarda al usuario.
 
