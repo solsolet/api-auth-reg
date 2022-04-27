@@ -24,10 +24,11 @@ const moment = require('moment');
 
 const app = express();
 
+//per a treballar amb la BD
 var db = mongojs("SD"); //es pot incloure + parametres: username:password@example.com/SD
 var id = mongojs.ObjectID;
 
-//Declarem els middleware
+//Middleware
 var allowMethods = (req,res,next) => {
     res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
     return next();
@@ -105,7 +106,6 @@ app.delete('/api/user/:id', auth, (req,res,next) => {
     });
 });
 
-
 //Gestió d'autiritzacions
 //funció per a autoritzar nsq. Afegir en tot com a variable auth??
 function auth (req,res,next) {
@@ -128,7 +128,6 @@ app.get('/api/auth', auth, (req,res,next) => {
 });
 
 //obtenim usuari a partir de token válid
-//revisa
 app.get('/api/auth/me', auth, (req,res,next) => {
     const usuari = req.user;
 
@@ -234,8 +233,3 @@ app.post('/api/reg', (req,res,next) => {
 https.createServer(OPTIONS_HTTPS, app).listen(port, () => {
     console.log(`WS RESTFul de Registro y Autenticación ejecutándose en https://localhost:${port}/api`);
 });
-
-//iniciem l'aplicació
-/*app.listen(port, () => {
-    console.log(`API REST ejecutándose en http://localhost:${port}/api/user/:id`);
-});*/
