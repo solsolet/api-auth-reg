@@ -247,7 +247,7 @@ Podemos ver que en Auth está elegido el `Type` Bearer Token y el token es el de
 * [JWT-simple](https://npmjs.com/package/jwt-simple) - Librería
 
 ## Versionado 📌
-Para todas las versiones disponibles, mira los [tags](https://github.com/tu/proyecto/tags).
+Para todas las versiones disponibles, mira los [tags](https://github.com/solsolet/api-auth-reg/tags).
 
 ## Autora ✒️
 * **Gemma Sellés** - *Desarrollo de la práctica* - [gls21](https://github.com/solsolet)
